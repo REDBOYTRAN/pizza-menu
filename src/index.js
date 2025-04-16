@@ -47,16 +47,6 @@ const pizzaData = [
   },
 ];
 
-function Pizza() {
-  return (
-    <>
-      <img src="pizzas/funghi.jpg" alt="" />
-      <h3>Pizza Prosciutto</h3>
-      <p>Tomato, mozarella, ham, aragula, and burrata cheese</p>
-    </>
-  );
-}
-
 function Header() {
   // const style = { color: "red", textTransform: "uppercase" };
   const style = {};
@@ -69,13 +59,30 @@ function Header() {
 }
 
 function Menu() {
+
+  const pizzas = pizzaData;
+
   return (
     <main className="menu">
       <h2>Menu</h2>
-      <Pizza />
-      <Pizza />
-      <Pizza />
+      {pizzas.length > 0 && <ul className="pizzas">
+      {pizzaData.map((pizza) => <Pizza key={pizza.name} pizzaObject={pizza} />)}
+      </ul>}
     </main>
+  );
+}
+
+
+function Pizza(props) {
+  return (
+    <div className="pizza">
+      <img src={props.pizzaObject.photoName} alt={props.name} />
+      <div>
+        <h3>{props.pizzaObject.name}</h3>
+        <p>{props.pizzaObject.ingredients}</p>
+        <span>{props.pizzaObject.price+3}</span>
+      </div>
+    </div>
   );
 }
 
@@ -93,7 +100,12 @@ function Footer() {
   //     return <p>Sorry we're closed</p>;
   //   }
 
-  return <footer className="footer">We're currently open.</footer>;
+  return <footer className="footer">{open ? (
+    <div className="order">
+      <p>We will open until {closeHour}:00. Please come visit us!</p>
+      <button className="btn">Order</button>
+    </div>
+  ) : (<p>We are closed now until {openHour}:00</p>)}</footer>;
 }
 
 function App() {
